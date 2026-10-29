@@ -1,0 +1,67 @@
+@model IEnumerable<Inscripcion>
+@{
+    ViewData["Title"] = "Inscripciones";
+}
+
+<h1>Inscripciones</h1>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+
+<div class="mb-3">
+    <a asp-action="Create" class="btn btn-success">Nueva inscripción</a>
+</div>
+
+<table class="table table-striped table-hover align-middle">
+    <thead>
+        <tr>
+            <th>Evento</th>
+            <th>Asistente</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="5" class="text-center text-muted">No hay inscripciones registradas.</td>
+            </tr>
+        }
+        else
+        {
+            foreach (var inscripcion in Model)
+            {
+                <tr>
+                    <td>@inscripcion.Evento?.Titulo</td>
+                    <td>@inscripcion.Asistente?.Nombres</td>
+                    <td>@inscripcion.FechaInscripcion.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        @if (inscripcion.Estado == EstadosInscripcion.Confirmada)
+                        {
+                            <span class="badge bg-success">@inscripcion.Estado</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">@inscripcion.Estado</span>
+                        }
+                    </td>
+                    <td class="text-end">
+                        <a asp-action="Details" asp-route-id="@inscripcion.Id" class="btn btn-sm btn-outline-secondary">Detalles</a>
+                        <a asp-action="Edit" asp-route-id="@inscripcion.Id" class="btn btn-sm btn-outline-primary">Editar</a>
+                        @if (inscripcion.Estado == EstadosInscripcion.Confirmada)
+                        {
+                            <form asp-action="Cancelar" asp-route-id="@inscripcion.Id" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-warning">Cancelar</button>
+                            </form>
+                        }
+                        <a asp-action="Delete" asp-route-id="@inscripcion.Id" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

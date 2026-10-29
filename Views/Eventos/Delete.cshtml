@@ -1,0 +1,32 @@
+@model Evento
+@{
+    ViewData["Title"] = "Eliminar evento";
+}
+
+<h1>Eliminar evento</h1>
+
+<div class="alert alert-warning">
+    La eliminación es lógica: el evento dejará de mostrarse, pero no se borrará de la base de datos.
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Título</dt>
+    <dd class="col-sm-9">@Model.Titulo</dd>
+
+    <dt class="col-sm-3">Categoría</dt>
+    <dd class="col-sm-9">@Model.Categoria?.Nombre</dd>
+
+    <dt class="col-sm-3">Fecha</dt>
+    <dd class="col-sm-9">@Model.Fecha.ToString("dd/MM/yyyy")</dd>
+
+    <dt class="col-sm-3">Lugar</dt>
+    <dd class="col-sm-9">@Model.Lugar</dd>
+
+    <dt class="col-sm-3">Inscritos confirmados</dt>
+    <dd class="col-sm-9">@Model.InscritosConfirmados</dd>
+</dl>
+
+<form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+    <button type="submit" class="btn btn-danger">Confirmar eliminación</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>
